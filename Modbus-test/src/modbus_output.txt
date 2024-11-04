@@ -1,1 +1,2 @@
-Modbus values: [0, 247, 247, 247, 26636]
+Date and Time: 2024-11-04 13:19:48
+Modbus values: [0, 235, 236, 235, 26403]
