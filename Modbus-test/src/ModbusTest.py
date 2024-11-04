@@ -1,7 +1,7 @@
 # src/modbus_check.py
-
 from pymodbus.client import ModbusTcpClient
 from pymodbus.exceptions import ModbusIOException, ModbusException
+from datetime import datetime
 
 def read_modbus_registers(ip, port, start_address, register_count, slave_id, timeout=10, retries=3):
     client = ModbusTcpClient(ip, port=port, timeout=timeout, retries=retries)
@@ -15,9 +15,11 @@ def read_modbus_registers(ip, port, start_address, register_count, slave_id, tim
         if result.isError():
             raise ModbusException(f"Error reading registers: {result}")
 
-        # Write the Modbus values to a file
+        # Write the Modbus values to a file with date and time
         output_file_path = "modbus_output.txt"
         with open(output_file_path, "w") as f:
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            f.write(f"Date and Time: {current_time}\n")
             f.write(f"Modbus values: {result.registers}\n")
 
         # Print the location of the output file
@@ -26,6 +28,7 @@ def read_modbus_registers(ip, port, start_address, register_count, slave_id, tim
         return result.registers
 
     except (ModbusIOException, ModbusException) as e:
+
         raise ModbusException(f"Modbus error: {e}")
     except Exception as e:
         raise e
